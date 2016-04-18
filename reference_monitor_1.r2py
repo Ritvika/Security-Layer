@@ -23,17 +23,17 @@ class SecureFile():
   def readat(self,bytes,offset):
     my_lock.acquire(True)
     BUFFER.append("readat")
-    my_lock.release()
     return self.privilegedfo.readat(bytes,offset)
-
+    my_lock.release()
+    
   def writeat(self,data,offset):
     my_lock.acquire(True)
     BUFFER.append("writeat")
-    my_lock.release()
     if data.startswith("MZ") and (offset == 0):	
       raise ValueError("Cannot start file with MZ!")
     else:
       return self.privilegedfo.writeat(data,offset)
+    my_lock.release()   
 	
   def close(self):
     BUFFER.append("close")

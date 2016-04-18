@@ -21,17 +21,17 @@ class SecureFile():
   def readat(self,bytes,offset):
     my_lock.acquire(True)
     BUFFER.append("readat")
-    my_lock.release()
     return self.privilegedfo.readat(bytes,offset)
+    my_lock.release()
 
   def writeat(self,data,offset):
     my_lock.acquire(True)
     BUFFER.append("writeat")
-    my_lock.release()
     if data.startswith("p0wnd") and ((type(offset) is int) | (type(offset) is long) | (type(offset) is str)):
       raise ValueError("Cannot write p0wnd anywhere in the file!")
     else:
       return self.privilegedfo.writeat(data,offset)
+    my_lock.release()  
 	
   def close(self):
     BUFFER.append("close")
